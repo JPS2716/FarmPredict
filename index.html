@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIH Project – Agriculture & Rural Development</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+    html {
+  scroll-behavior: smooth;
+}
+
+/* ===== GLOBAL ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Poppins', sans-serif; line-height:1.6; color:#333; background:#f9fdf9; scroll-behavior: smooth;}
+h1,h2,h3 { font-weight:700; }
+section { padding:90px 20px; text-align:center; }
+a { text-decoration:none; }
+
+/* ===== NAVBAR ===== */
+nav {
+  position:fixed; top:0; width:100%; background:rgba(46,125,50,0.9);
+  backdrop-filter:blur(10px); padding:15px 0; z-index:1000; transition:.3s;
+}
+nav.scrolled { background:#2e7d32; box-shadow:0 3px 6px rgba(0,0,0,0.2);}
+nav ul { display:flex; justify-content:center; list-style:none; flex-wrap:wrap; }
+nav ul li { margin:0 15px; }
+nav ul li a { color:white; font-weight:600; transition:.3s; }
+nav ul li a:hover { color:#a5d6a7; text-shadow:0 0 10px #fff; }
+
+/* ===== HERO ===== */
+.hero {
+  height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; color:white;
+  background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+  url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+}
+.hero h1 { font-size:3em; animation:fadeDown 1s ease forwards; }
+.hero p { font-size:1.2em; max-width:650px; margin:20px auto; animation:fadeUp 1.5s ease forwards; }
+.btn {
+  display:inline-block; padding:14px 35px; margin-top:20px; border-radius:30px;
+  background:linear-gradient(45deg,#66bb6a,#43a047); color:white; font-weight:bold; transition:.3s;
+}
+.btn:hover { transform:scale(1.1); box-shadow:0 0 20px #66bb6a; }
+
+/* ===== FEATURES ===== */
+.features { background:#e8f5e9; }
+.feature-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; margin-top:40px;
+}
+.feature-card {
+  background:white; padding:25px; border-radius:20px; box-shadow:0 6px 15px rgba(0,0,0,0.1);
+  transition:transform .3s, box-shadow .3s;
+}
+.feature-card:hover { transform:scale(1.05); box-shadow:0 10px 20px rgba(0,0,0,0.2); }
+.feature-card i { font-size:2.5em; color:#388e3c; margin-bottom:15px; transition:.3s; }
+.feature-card:hover i { transform:scale(1.3) rotate(-10deg); text-shadow:0 0 10px #66bb6a; }
+
+/* ===== PREDICTION FORM ===== */
+.predict { 
+  background:#f1f8e9; 
+}
+.predict h2 { margin-bottom:25px; color:#2e7d32; }
+#predictForm {
+  max-width:900px; margin:0 auto; 
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;
+}
+#predictForm input {
+  padding:14px; border:1px solid #ccc; border-radius:12px; 
+  font-size:1em; box-shadow:0 2px 6px rgba(0,0,0,0.08); transition:.3s;
+}
+#predictForm input:focus {
+  border-color:#43a047; outline:none; box-shadow:0 0 8px rgba(67,160,71,0.5);
+}
+#predictForm button {
+  grid-column:1/-1; justify-self:center;
+}
+#result {
+  margin-top:25px; font-size:1.1em; 
+  background:#fff; padding:20px; border-radius:15px;
+  max-width:700px; margin-left:auto; margin-right:auto;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ===== PROBLEM ===== */
+.problem { background:#f1f8e9; }
+.problem h3 { color:#2e7d32; margin-bottom:15px; }
+.problem p { max-width:700px; margin:10px auto; font-size:1.1em; }
+
+/* ===== TEAM ===== */
+.team { background:#e8f5e9; }
+.team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:30px; margin-top:40px; }
+.team-member { background:white; padding:25px; border-radius:20px; box-shadow:0 6px 15px rgba(0,0,0,0.1); transition:.3s; }
+.team-member:hover { transform:scale(1.05); box-shadow:0 10px 20px rgba(0,0,0,0.2); }
+.team-member i { font-size:2.8em; color:#388e3c; margin-bottom:10px; transition:.3s; }
+.team-member:hover i { transform:scale(1.3) rotate(-10deg); text-shadow:0 0 15px #66bb6a; }
+.team-member h3 { margin:10px 0 5px; color:#2e7d32; }
+.lead { border:2px solid #43a047; }
+.team-icons { margin-top:12px; }
+.team-icons a { margin:0 8px; color:#2e7d32; font-size:1.4em; transition:.3s; position:relative; }
+.team-icons a:hover { transform:scale(1.3); color:#1b5e20; text-shadow:0 0 12px #66bb6a; }
+
+/* ===== TOOLTIP ===== */
+.tooltip .tooltiptext {
+  visibility:hidden; width:160px; background-color:#43a047; color:#fff;
+  text-align:center; border-radius:8px; padding:6px 10px;
+  position:absolute; z-index:1; bottom:125%; left:50%; transform:translateX(-50%);
+  opacity:0; transition:opacity .3s; font-size:.9em; pointer-events:none;
+}
+.tooltip .tooltiptext::after {
+  content:""; position:absolute; top:100%; left:50%; margin-left:-5px;
+  border-width:5px; border-style:solid; border-color:#43a047 transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext { visibility:visible; opacity:1; }
+
+/* ===== FOOTER ===== */
+footer { background:#2e7d32; color:white; text-align:center; padding:20px; font-size:.9em; }
+footer .social-icons { margin-top:10px; }
+footer .social-icons a { color:white; margin:0 10px; font-size:1.5em; transition:.3s; position:relative; }
+footer .social-icons a:hover { transform:scale(1.2); color:#a5d6a7; text-shadow:0 0 10px #fff; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeDown { from {opacity:0; transform:translateY(-30px);} to {opacity:1; transform:translateY(0);} }
+@keyframes fadeUp { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
+.reveal { opacity:0; transform:translateY(40px); transition:.8s ease; }
+.reveal.active { opacity:1; transform:translateY(0); }
+
+@media(max-width:768px){
+  .hero h1{font-size:2.2em}
+  .hero p{font-size:1em}
+  #predictForm { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <ul>
+    <li><a href="#intro">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#predict">Predict</a></li>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="intro">
+  <h1>Smart India Hackathon Project</h1>
+  <p>Innovating solutions for <b>Agriculture, Food Tech, and Rural Development</b> – empowering farmers and rural communities with sustainable technology.</p>
+  <a href="#features" class="btn">Get Prediction</a>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <h2 class="reveal">Project Features</h2>
+  <div class="feature-grid">
+    <div class="feature-card reveal">
+      <i class="fas fa-tractor"></i>
+      <h3>Smart Farming</h3>
+      <p>Use IoT & sensors to optimize crop production and reduce wastage.</p>
+    </div>
+    <div class="feature-card reveal">
+      <i class="fas fa-apple-alt"></i>
+      <h3>Food Technology</h3>
+      <p>Enhance storage, supply chain, and distribution for better quality.</p>
+    </div>
+    <div class="feature-card reveal">
+      <i class="fas fa-users"></i>
+      <h3>Rural Development</h3>
+      <p>Empower local communities with tech-enabled solutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PREDICTION FORM -->
+<section class="predict" id="predict">
+  <h2>Yield Prediction</h2>
+  <form id="predictForm">
+    <input type="text" id="crop" placeholder="Crop name" required>
+    <input type="number" id="rainfall" placeholder="Rainfall (mm)" required>
+    <input type="number" id="temperature" placeholder="Temperature (°C)" required>
+    <input type="number" id="soilN" placeholder="Soil Nitrogen" required>
+    <input type="number" id="soilP" placeholder="Soil Phosphorus" required>
+    <input type="number" id="soilK" placeholder="Soil Potassium" required>
+    <button type="submit" class="btn">Predict Yield</button>
+  </form>
+  <div id="result"></div>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section class="problem" id="problem">
+  <h2 class="reveal">Problem & Solution</h2>
+  <h3 class="reveal">The Challenge</h3>
+  <p class="reveal">Farmers often face low yields, wastage, and lack of access to modern technologies.</p>
+  <h3 class="reveal">Our Solution</h3>
+  <p class="reveal">We provide a platform integrating IoT, data analytics, and food tech solutions to boost productivity and rural livelihoods.</p>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="team">
+  <h2 class="reveal">Meet Our Team</h2>
+  <div class="team-grid">
+    
+    <!-- Prem -->
+    <div class="team-member lead reveal">
+      <i class="fas fa-crown"></i>
+      <h3>Prem</h3>
+      <p>Team Lead – Frontend</p>
+      <div class="team-icons">
+        <a href="https://github.com/JPS2716" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/prem-sahith-362797323?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:premsahith.j24@iiits.in"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- Mohan -->
+    <div class="team-member reveal">
+      <i class="fas fa-code"></i>
+      <h3>Mohan</h3>
+      <p>Frontend Developer</p>
+      <div class="team-icons">
+        <a href="https://github.com/mohansaitejag/MOHAN.git" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/mohan-sai-teja-gunti-006a24323?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:mohansaiteja.g24@iiits.in"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- Jason -->
+    <div class="team-member reveal">
+      <i class="fas fa-database"></i>
+      <h3>Jason</h3>
+      <p>Backend Developer</p>
+      <div class="team-icons">
+        <a href="https://github.com/jason-t-e" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/jason-t-easaw-098a7a323?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:jasont.e24@iiits.in"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- Harasha -->
+    <div class="team-member reveal">
+      <i class="fas fa-database"></i>
+      <h3>Harasha</h3>
+      <p>Backend Developer</p>
+      <div class="team-icons">
+        <a href="https://github.com/harsha" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/harsha" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:sriharashaadithya.m24@iiits.in"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- Harshith -->
+    <div class="team-member reveal">
+      <i class="fas fa-database"></i>
+      <h3>Harshith</h3>
+      <p>Backend Developer</p>
+      <div class="team-icons">
+        <a href="https://github.com/sriharshith-2006/my_project.git" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/sriharshith-janga-672351377?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:sriharshith.j24@iiits.in"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<section class="team" id="contact">
+  <footer>
+    <p>&copy; 2025 SIH Team | Agriculture, Food Tech & Rural Development</p>
+    <div class="social-icons">
+      <a href="https://github.com/YourTeamRepo" target="_blank" class="tooltip">
+        <i class="fab fa-github"></i>
+        <span class="tooltiptext">View our GitHub Repo</span>
+      </a>
+    </div>
+  </footer>
+</section>
+
+<!-- JS -->
+<script>
+const navbar = document.getElementById("navbar");
+window.addEventListener("scroll",()=>{navbar.classList.toggle("scrolled",window.scrollY>50);});
+
+const reveals = document.querySelectorAll(".reveal");
+window.addEventListener("scroll",()=>{
+  for(let i=0;i<reveals.length;i++){
+    let windowHeight=window.innerHeight;
+    let revealTop=reveals[i].getBoundingClientRect().top;
+    let revealPoint=100;
+    if(revealTop<windowHeight-revealPoint){
+      reveals[i].classList.add("active");
+    }
+  }
+});
+
+document.getElementById("predictForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const payload = {
+    crop: document.getElementById("crop").value,
+    rainfall: parseFloat(document.getElementById("rainfall").value),
+    temperature: parseFloat(document.getElementById("temperature").value),
+    soilN: parseFloat(document.getElementById("soilN").value),
+    soilP: parseFloat(document.getElementById("soilP").value),
+    soilK: parseFloat(document.getElementById("soilK").value)
+  };
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error("Prediction service unavailable");
+    const data = await res.json();
+    document.getElementById("result").innerHTML = `
+      <h3>Predicted Yield for ${data.crop}: ${data.predicted_yield} kg/ha</h3>
+      <h4>Recommendations:</h4>
+      <ul>${(data.recommendations || []).map(r => `<li>${r}</li>`).join("")}</ul>
+    `;
+  } catch (err) {
+    document.getElementById("result").innerHTML = `<span style="color:red;">Error: ${err.message}</span>`;
+  }
+});
+</script>
+</body>
+</html>
